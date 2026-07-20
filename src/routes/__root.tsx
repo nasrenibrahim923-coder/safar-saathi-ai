@@ -77,14 +77,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Safar Saathi — AI Budget Trip Planner for Pakistan" },
+      { name: "description", content: "AI-powered budget trip planner for Pakistani university students. Get personalized day-by-day itineraries in PKR." },
+      { property: "og:title", content: "Safar Saathi — AI Budget Trip Planner for Pakistan" },
+      { property: "og:description", content: "Plan authentic, affordable trips across Pakistan with a friendly AI local guide." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
       {
