@@ -80,9 +80,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: "Safar Saathi — AI Budget Trip Planner for Pakistan" },
       { name: "description", content: "AI-powered budget trip planner for Pakistani university students. Get personalized day-by-day itineraries in PKR." },
       { property: "og:title", content: "Safar Saathi — AI Budget Trip Planner for Pakistan" },
-      { property: "og:description", content: "Plan authentic, affordable trips across Pakistan with a friendly AI local guide." },
+      { property: "og:description", content: "AI-powered budget trip planner for Pakistani university students. Get personalized day-by-day itineraries in PKR." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Safar Saathi — AI Budget Trip Planner for Pakistan" },
+      { name: "twitter:description", content: "AI-powered budget trip planner for Pakistani university students. Get personalized day-by-day itineraries in PKR." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/c046baac-b9db-49aa-9383-210af5664202/id-preview-1265b3fe--a52f327c-10ca-4111-a1be-3969dae176bb.lovable.app-1784525733020.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/c046baac-b9db-49aa-9383-210af5664202/id-preview-1265b3fe--a52f327c-10ca-4111-a1be-3969dae176bb.lovable.app-1784525733020.png" },
     ],
     links: [
       {
