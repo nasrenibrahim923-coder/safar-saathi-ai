@@ -1,24 +1,274 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
+import { toast } from "sonner";
+import { Toaster } from "@/components/ui/sonner";
+import { Loader2, Sparkles, MapPin, Wallet, Users, Compass, Mountain, Utensils, Waves, ScrollText, Church, Bike } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent } from "@/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Slider } from "@/components/ui/slider";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { SiteHeader } from "@/components/site-header";
+import {
+  DESTINATIONS,
+  GROUP_SIZES,
+  INTERESTS,
+  PAKISTANI_CITIES,
+  type GroupSize,
+  type Interest,
+  type SavedTrip,
+} from "@/lib/trip-types";
+import { generateItinerary } from "@/lib/itinerary.functions";
+import { makeId, saveTrip } from "@/lib/trips-store";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
-  component: Index,
+  component: Landing,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
+const INTEREST_ICONS: Record<Interest, React.ComponentType<{ className?: string }>> = {
+  Nature: Mountain,
+  History: ScrollText,
+  Food: Utensils,
+  Adventure: Bike,
+  "Religious Sites": Church,
+  Beaches: Waves,
+};
+
+function Landing() {
+  const navigate = useNavigate();
+  const [startCity, setStartCity] = useState<string>("Lahore");
+  const [destination, setDestination] = useState<string>("Surprise Me");
+  const [days, setDays] = useState<number>(4);
+  const [budget, setBudget] = useState<string>("25000");
+  const [interests, setInterests] = useState<Interest[]>(["Nature", "Food"]);
+  const [group, setGroup] = useState<GroupSize>("Friends group");
+  const [loading, setLoading] = useState(false);
+
+  function toggleInterest(i: Interest) {
+    setInterests((prev) => (prev.includes(i) ? prev.filter((x) => x !== i) : [...prev, i]));
+  }
+
+  async function onSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    const budgetPKR = Number(budget);
+    if (!Number.isFinite(budgetPKR) || budgetPKR < 1000) {
+      toast.error("Please enter a realistic PKR budget (min PKR 1,000).");
+      return;
+    }
+    if (interests.length === 0) {
+      toast.error("Pick at least one travel interest.");
+      return;
+    }
+    setLoading(true);
+    try {
+      const itinerary = await generateItinerary({
+        data: { startCity, destination, days, budgetPKR, interests, groupSize: group },
+      });
+      const trip: SavedTrip = {
+        id: makeId(),
+        createdAt: Date.now(),
+        input: { startCity, destination, days, budgetPKR, interests, groupSize: group },
+        itinerary,
+      };
+      saveTrip(trip);
+      toast.success("Your itinerary is ready!");
+      navigate({ to: "/trips/$id", params: { id: trip.id } });
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Failed to generate itinerary");
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
+    <div className="min-h-screen" style={{ backgroundImage: "var(--gradient-soft)" }}>
+      <Toaster richColors position="top-center" />
+      <SiteHeader />
+
+      {/* Hero */}
+      <section className="mx-auto max-w-6xl px-4 pt-12 pb-8 text-center">
+        <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-3 py-1 text-xs font-medium text-primary">
+          <Sparkles className="h-3.5 w-3.5" /> AI-powered · Made for Pakistani students
+        </div>
+        <h1 className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
+          Explore Pakistan on a{" "}
+          <span
+            className="bg-clip-text text-transparent"
+            style={{ backgroundImage: "var(--gradient-hero)" }}
+          >
+            student budget
+          </span>
+          .
+        </h1>
+        <p className="mx-auto mt-4 max-w-2xl text-base text-muted-foreground sm:text-lg">
+          Safar Saathi is your friendly local AI trip planner — day-by-day itineraries, cheap
+          hostels, Daewoo routes, dhaba picks, and packing tips, all within your PKR budget.
+        </p>
+      </section>
+
+      {/* Form */}
+      <section className="mx-auto max-w-3xl px-4 pb-16">
+        <Card className="overflow-hidden border-0" style={{ boxShadow: "var(--shadow-elegant)" }}>
+          <div style={{ backgroundImage: "var(--gradient-hero)" }} className="h-2 w-full" />
+          <CardContent className="p-6 sm:p-8">
+            <form onSubmit={onSubmit} className="space-y-6">
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="space-y-2">
+                  <Label className="flex items-center gap-1.5">
+                    <MapPin className="h-3.5 w-3.5 text-primary" /> Starting city
+                  </Label>
+                  <Select value={startCity} onValueChange={setStartCity}>
+                    <SelectTrigger><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      {PAKISTANI_CITIES.map((c) => (
+                        <SelectItem key={c} value={c}>{c}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="space-y-2">
+                  <Label className="flex items-center gap-1.5">
+                    <Compass className="h-3.5 w-3.5 text-accent" /> Destination
+                  </Label>
+                  <Select value={destination} onValueChange={setDestination}>
+                    <SelectTrigger><SelectValue /></SelectTrigger>
+                    <SelectContent>
+                      {DESTINATIONS.map((d) => (
+                        <SelectItem key={d} value={d}>{d}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <Label>Number of days</Label>
+                    <span className="text-sm font-semibold text-primary">{days} {days === 1 ? "day" : "days"}</span>
+                  </div>
+                  <Slider
+                    min={1}
+                    max={14}
+                    step={1}
+                    value={[days]}
+                    onValueChange={(v) => setDays(v[0])}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label className="flex items-center gap-1.5" htmlFor="budget">
+                    <Wallet className="h-3.5 w-3.5 text-primary" /> Total budget (PKR)
+                  </Label>
+                  <Input
+                    id="budget"
+                    type="number"
+                    inputMode="numeric"
+                    min={1000}
+                    step={1000}
+                    value={budget}
+                    onChange={(e) => setBudget(e.target.value)}
+                    placeholder="e.g. 25000"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label>Travel interests</Label>
+                <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+                  {INTERESTS.map((i) => {
+                    const Icon = INTEREST_ICONS[i];
+                    const active = interests.includes(i);
+                    return (
+                      <button
+                        type="button"
+                        key={i}
+                        onClick={() => toggleInterest(i)}
+                        className={
+                          "flex items-center gap-2 rounded-lg border px-3 py-2.5 text-sm font-medium transition-all " +
+                          (active
+                            ? "border-primary bg-primary/10 text-primary shadow-sm"
+                            : "border-border bg-card text-muted-foreground hover:border-primary/40 hover:text-foreground")
+                        }
+                        aria-pressed={active}
+                      >
+                        <Icon className="h-4 w-4" />
+                        {i}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label className="flex items-center gap-1.5">
+                  <Users className="h-3.5 w-3.5 text-accent" /> Group size
+                </Label>
+                <RadioGroup
+                  value={group}
+                  onValueChange={(v) => setGroup(v as GroupSize)}
+                  className="grid grid-cols-2 gap-2 sm:grid-cols-4"
+                >
+                  {GROUP_SIZES.map((g) => (
+                    <Label
+                      key={g}
+                      htmlFor={`group-${g}`}
+                      className={
+                        "flex cursor-pointer items-center gap-2 rounded-lg border px-3 py-2.5 text-sm font-medium transition-all " +
+                        (group === g
+                          ? "border-accent bg-accent/10 text-accent"
+                          : "border-border bg-card text-muted-foreground hover:border-accent/40 hover:text-foreground")
+                      }
+                    >
+                      <RadioGroupItem id={`group-${g}`} value={g} className="sr-only" />
+                      {g}
+                    </Label>
+                  ))}
+                </RadioGroup>
+              </div>
+
+              <Button
+                type="submit"
+                size="lg"
+                disabled={loading}
+                className="w-full text-base font-semibold text-primary-foreground shadow-md hover:opacity-95"
+                style={{ backgroundImage: "var(--gradient-hero)" }}
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Planning your safar…
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="mr-2 h-4 w-4" /> Plan my trip
+                  </>
+                )}
+              </Button>
+              {loading && (
+                <p className="text-center text-xs text-muted-foreground">
+                  Our AI local guide is scouting cheap hostels, buses, and dhabas… hang tight.
+                </p>
+              )}
+            </form>
+          </CardContent>
+        </Card>
+
+        <div className="mt-10 grid gap-4 sm:grid-cols-3">
+          <FeatureCard title="Day-by-day plans" body="Places, activities, transport, food and stay for every day." />
+          <FeatureCard title="Realistic PKR costs" body="Student-friendly hostels, Daewoo/local bus routes, dhaba meals." />
+          <FeatureCard title="Save & refine" body="Save trips to My Trips and regenerate any day with one click." />
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function FeatureCard({ title, body }: { title: string; body: string }) {
+  return (
+    <div className="rounded-xl border bg-card p-4 text-sm" style={{ boxShadow: "var(--shadow-card)" }}>
+      <div className="font-semibold text-foreground">{title}</div>
+      <p className="mt-1 text-muted-foreground">{body}</p>
     </div>
   );
 }
