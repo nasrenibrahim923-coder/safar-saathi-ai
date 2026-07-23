@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
-import { Loader2, Sparkles, MapPin, Wallet, Users, Compass, Mountain, Utensils, Waves, ScrollText, Church, Bike } from "lucide-react";
+import { Loader2, Sparkles, MapPin, Wallet, Users, Compass, Mountain, Utensils, Waves, ScrollText, Church, Bike, Clock, ListChecks, Route as RouteIcon, HeartHandshake } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -88,11 +88,35 @@ function Landing() {
       <SiteHeader />
 
       {/* Hero */}
-      <section className="mx-auto max-w-6xl px-4 pt-12 pb-8 text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-3 py-1 text-xs font-medium text-primary">
+      <section className="relative mx-auto max-w-6xl px-4 pt-12 pb-8 text-center">
+        {/* Decorative travel background */}
+        <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+          <svg
+            className="absolute inset-x-0 bottom-0 h-56 w-full text-primary/10 sm:h-72"
+            viewBox="0 0 1200 300"
+            preserveAspectRatio="none"
+            fill="currentColor"
+          >
+            <path d="M0,220 L120,160 L220,210 L320,120 L430,200 L560,90 L680,190 L800,140 L920,210 L1050,150 L1200,200 L1200,300 L0,300 Z" opacity="0.55" />
+            <path d="M0,250 L140,200 L260,240 L380,180 L520,240 L640,190 L780,240 L900,200 L1040,240 L1200,210 L1200,300 L0,300 Z" className="text-accent/10" fill="currentColor" />
+          </svg>
+          <div
+            className="absolute inset-0 opacity-[0.06]"
+            style={{
+              backgroundImage:
+                "radial-gradient(circle at 1px 1px, currentColor 1px, transparent 0)",
+              backgroundSize: "22px 22px",
+              color: "var(--primary)",
+            }}
+          />
+          <Compass className="absolute right-6 top-8 h-24 w-24 text-primary/10 sm:right-16 sm:h-32 sm:w-32 animate-[spin_40s_linear_infinite]" />
+          <Mountain className="absolute left-4 top-16 h-16 w-16 text-accent/15 sm:left-10 sm:h-24 sm:w-24" />
+        </div>
+
+        <div className="inline-flex animate-fade-in items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-3 py-1 text-xs font-medium text-primary">
           <Sparkles className="h-3.5 w-3.5" /> AI-powered · Made for Pakistani students
         </div>
-        <h1 className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
+        <h1 className="mt-4 animate-fade-in text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl [animation-delay:80ms] [animation-fill-mode:both]">
           Explore Pakistan on a{" "}
           <span
             className="bg-clip-text text-transparent"
@@ -102,14 +126,22 @@ function Landing() {
           </span>
           .
         </h1>
-        <p className="mx-auto mt-4 max-w-2xl text-base text-muted-foreground sm:text-lg">
+        <p className="mx-auto mt-4 max-w-2xl animate-fade-in text-base text-muted-foreground sm:text-lg [animation-delay:160ms] [animation-fill-mode:both]">
           Safar Saathi is your friendly local AI trip planner — day-by-day itineraries, cheap
           hostels, Daewoo routes, dhaba picks, and packing tips, all within your PKR budget.
         </p>
+
+        {/* Stats row */}
+        <div className="mx-auto mt-8 grid max-w-3xl animate-fade-in grid-cols-2 gap-3 sm:grid-cols-4 [animation-delay:240ms] [animation-fill-mode:both]">
+          <StatPill icon={ListChecks} label="4 easy steps" />
+          <StatPill icon={Clock} label="Under 60 seconds" />
+          <StatPill icon={RouteIcon} label="50+ PK destinations" />
+          <StatPill icon={HeartHandshake} label="Student-friendly costs" />
+        </div>
       </section>
 
       {/* Form */}
-      <section className="mx-auto max-w-3xl px-4 pb-16">
+      <section className="mx-auto max-w-3xl animate-fade-in px-4 pb-16 [animation-delay:320ms] [animation-fill-mode:both]">
         <Card className="overflow-hidden border-0" style={{ boxShadow: "var(--shadow-elegant)" }}>
           <div style={{ backgroundImage: "var(--gradient-hero)" }} className="h-2 w-full" />
           <CardContent className="p-6 sm:p-8">
@@ -260,6 +292,18 @@ function Landing() {
           <FeatureCard title="Save & refine" body="Save trips to My Trips and regenerate any day with one click." />
         </div>
       </section>
+    </div>
+  );
+}
+
+function StatPill({ icon: Icon, label }: { icon: React.ComponentType<{ className?: string }>; label: string }) {
+  return (
+    <div
+      className="flex items-center justify-center gap-2 rounded-full border border-border/60 bg-card/70 px-3 py-2 text-xs font-medium text-foreground backdrop-blur-sm sm:text-sm"
+      style={{ boxShadow: "var(--shadow-card)" }}
+    >
+      <Icon className="h-4 w-4 text-primary" />
+      <span>{label}</span>
     </div>
   );
 }
