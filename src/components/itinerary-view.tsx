@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import type { Itinerary, SavedTrip } from "@/lib/trip-types";
-import { regenerateDay } from "@/lib/itinerary.functions";
+import { regenerateDay, generateItinerary } from "@/lib/itinerary.functions";
 import { saveTrip } from "@/lib/trips-store";
 import { downloadTripPdf } from "@/lib/pdf-export";
 
@@ -25,6 +25,7 @@ export function ItineraryView({
 }) {
   const [itinerary, setItinerary] = useState<Itinerary>(trip.itinerary);
   const [regenerating, setRegenerating] = useState<number | null>(null);
+  const [regeneratingAll, setRegeneratingAll] = useState(false);
 
   async function handleRegenerate(dayNumber: number) {
     setRegenerating(dayNumber);
@@ -49,6 +50,22 @@ export function ItineraryView({
     }
   }
 
+  async function handleRegenerateAll() {
+    setRegeneratingAll(true);
+    try {
+      const fresh = await generateItinerary({ data: trip.input });
+      setItinerary(fresh);
+      const saved: SavedTrip = { ...trip, itinerary: fresh };
+      saveTrip(saved);
+      onUpdated?.(saved);
+      toast.success("Itinerary regenerated with a fresh plan");
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Failed to regenerate itinerary");
+    } finally {
+      setRegeneratingAll(false);
+    }
+  }
+
   return (
     <div className="space-y-6">
       <Card className="overflow-hidden border-0" style={{ boxShadow: "var(--shadow-elegant)" }}>
@@ -62,6 +79,15 @@ export function ItineraryView({
               <p className="mt-2 max-w-2xl text-sm opacity-95">{itinerary.summary}</p>
             </div>
             <div className="flex flex-wrap gap-2">
+              <Button
+                variant="secondary"
+                size="sm"
+                disabled={regeneratingAll}
+                onClick={handleRegenerateAll}
+              >
+                <RefreshCw className={"mr-1 h-4 w-4 " + (regeneratingAll ? "animate-spin" : "")} />
+                {regeneratingAll ? "Regenerating…" : "Regenerate Full Itinerary"}
+              </Button>
               <Button
                 variant="secondary"
                 size="sm"
