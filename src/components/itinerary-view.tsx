@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { toast } from "sonner";
-import { Bus, Utensils, BedDouble, MapPin, Sparkles, Calendar, Wallet, PackageCheck, Lightbulb, RefreshCw, Trash2 } from "lucide-react";
+import { Bus, Utensils, BedDouble, MapPin, Sparkles, Calendar, Wallet, PackageCheck, Lightbulb, RefreshCw, Trash2, Download } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -8,6 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import type { Itinerary, SavedTrip } from "@/lib/trip-types";
 import { regenerateDay } from "@/lib/itinerary.functions";
 import { saveTrip } from "@/lib/trips-store";
+import { downloadTripPdf } from "@/lib/pdf-export";
 
 function formatPKR(n: number) {
   return "PKR " + Math.round(n).toLocaleString("en-PK");
@@ -60,11 +61,27 @@ export function ItineraryView({
               <h1 className="mt-1 text-3xl font-bold tracking-tight">{itinerary.destinationResolved}</h1>
               <p className="mt-2 max-w-2xl text-sm opacity-95">{itinerary.summary}</p>
             </div>
-            {onDelete && (
-              <Button variant="secondary" size="sm" onClick={onDelete}>
-                <Trash2 className="mr-1 h-4 w-4" /> Delete trip
+            <div className="flex flex-wrap gap-2">
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => {
+                  try {
+                    downloadTripPdf({ ...trip, itinerary });
+                    toast.success("PDF downloaded");
+                  } catch (e) {
+                    toast.error(e instanceof Error ? e.message : "Failed to generate PDF");
+                  }
+                }}
+              >
+                <Download className="mr-1 h-4 w-4" /> Download PDF
               </Button>
-            )}
+              {onDelete && (
+                <Button variant="secondary" size="sm" onClick={onDelete}>
+                  <Trash2 className="mr-1 h-4 w-4" /> Delete trip
+                </Button>
+              )}
+            </div>
           </div>
           <div className="mt-4 flex flex-wrap gap-2 text-xs">
             <Badge variant="secondary" className="gap-1 bg-white/20 text-white hover:bg-white/25">
