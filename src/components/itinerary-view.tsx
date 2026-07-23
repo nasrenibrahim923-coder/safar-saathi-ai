@@ -157,6 +157,45 @@ export function ItineraryView({
             </div>
           </div>
         </CardContent>
+        <div className="border-t px-6 py-5">
+          {(() => {
+            const used = itinerary.totalEstimatedCostPKR;
+            const budget = trip.input.budgetPKR;
+            const pct = budget > 0 ? (used / budget) * 100 : 0;
+            const clamped = Math.min(100, Math.max(0, pct));
+            const over = pct > 100;
+            return (
+              <div>
+                <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+                  <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
+                    <Wallet className="h-4 w-4 text-primary" /> Budget usage
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    <span className="font-medium text-foreground">{formatPKR(used)}</span> of{" "}
+                    <span className="font-medium text-foreground">{formatPKR(budget)}</span> used
+                    <span className={"ml-2 font-semibold " + (over ? "text-accent" : "text-primary")}>
+                      ({pct.toFixed(0)}%)
+                    </span>
+                  </div>
+                </div>
+                <div className="h-3 w-full overflow-hidden rounded-full bg-secondary">
+                  <div
+                    className="h-full rounded-full transition-all duration-500"
+                    style={{
+                      width: clamped + "%",
+                      backgroundImage: "linear-gradient(90deg, hsl(var(--primary)), hsl(var(--accent)))",
+                    }}
+                  />
+                </div>
+                {over && (
+                  <p className="mt-2 text-xs text-accent">
+                    Heads up: estimated cost is over your budget by {formatPKR(used - budget)}.
+                  </p>
+                )}
+              </div>
+            );
+          })()}
+        </div>
       </Card>
 
       <div className="grid gap-4">
