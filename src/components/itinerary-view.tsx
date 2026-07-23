@@ -183,7 +183,7 @@ export function ItineraryView({
                     className="h-full rounded-full transition-all duration-500"
                     style={{
                       width: clamped + "%",
-                      backgroundImage: "linear-gradient(90deg, hsl(var(--primary)), hsl(var(--accent)))",
+                      backgroundImage: "linear-gradient(90deg, var(--primary), var(--accent))",
                     }}
                   />
                 </div>
