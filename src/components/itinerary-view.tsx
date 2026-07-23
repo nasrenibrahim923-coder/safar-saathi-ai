@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { toast } from "sonner";
-import { Bus, Utensils, BedDouble, MapPin, Sparkles, Calendar, Wallet, PackageCheck, Lightbulb, RefreshCw, Trash2, Download } from "lucide-react";
+import { Bus, Utensils, BedDouble, MapPin, Sparkles, Calendar, Wallet, PackageCheck, Lightbulb, RefreshCw, Trash2, Download, Share2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -62,6 +62,21 @@ export function ItineraryView({
               <p className="mt-2 max-w-2xl text-sm opacity-95">{itinerary.summary}</p>
             </div>
             <div className="flex flex-wrap gap-2">
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={async () => {
+                  const url = typeof window !== "undefined" ? window.location.href : "";
+                  try {
+                    await navigator.clipboard.writeText(url);
+                    toast.success("Link copied!");
+                  } catch {
+                    toast.error("Couldn't copy link");
+                  }
+                }}
+              >
+                <Share2 className="mr-1 h-4 w-4" /> Share
+              </Button>
               <Button
                 variant="secondary"
                 size="sm"
