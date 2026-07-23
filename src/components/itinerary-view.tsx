@@ -139,25 +139,7 @@ export function ItineraryView({
             </Badge>
           </div>
         </div>
-        <CardContent className="grid gap-4 p-6 sm:grid-cols-2">
-          <div>
-            <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
-              <Calendar className="h-4 w-4 text-primary" /> Best time to visit
-            </div>
-            <p className="mt-1 text-sm text-muted-foreground">{itinerary.bestTimeToVisit}</p>
-          </div>
-          <div>
-            <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
-              <Wallet className="h-4 w-4 text-accent" /> Interests
-            </div>
-            <div className="mt-1 flex flex-wrap gap-1">
-              {trip.input.interests.map((i) => (
-                <Badge key={i} variant="outline">{i}</Badge>
-              ))}
-            </div>
-          </div>
-        </CardContent>
-        <div className="border-t px-6 py-5">
+        <div className="border-b px-6 py-5">
           {(() => {
             const used = itinerary.totalEstimatedCostPKR;
             const budget = trip.input.budgetPKR;
@@ -196,6 +178,24 @@ export function ItineraryView({
             );
           })()}
         </div>
+        <CardContent className="grid gap-4 p-6 sm:grid-cols-2">
+          <div>
+            <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
+              <Calendar className="h-4 w-4 text-primary" /> Best time to visit
+            </div>
+            <p className="mt-1 text-sm text-muted-foreground">{itinerary.bestTimeToVisit}</p>
+          </div>
+          <div>
+            <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
+              <Wallet className="h-4 w-4 text-accent" /> Interests
+            </div>
+            <div className="mt-1 flex flex-wrap gap-1">
+              {trip.input.interests.map((i) => (
+                <Badge key={i} variant="outline">{i}</Badge>
+              ))}
+            </div>
+          </div>
+        </CardContent>
       </Card>
 
       <div className="grid gap-4">
