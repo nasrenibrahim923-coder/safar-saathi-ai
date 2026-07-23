@@ -135,7 +135,7 @@ function Landing() {
         <div className="mx-auto mt-8 grid max-w-3xl animate-fade-in grid-cols-2 gap-3 sm:grid-cols-4 [animation-delay:240ms] [animation-fill-mode:both]">
           <StatPill icon={ListChecks} label="4 easy steps" />
           <StatPill icon={Clock} label="Under 60 seconds" />
-          <StatPill icon={RouteIcon} label="50+ PK destinations" />
+          <StatPill icon={RouteIcon} label="15+ PK destinations" />
           <StatPill icon={HeartHandshake} label="Student-friendly costs" />
         </div>
       </section>
