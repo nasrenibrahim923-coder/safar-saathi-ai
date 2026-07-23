@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { toast } from "sonner";
 import { Bus, Utensils, BedDouble, MapPin, Sparkles, Calendar, Wallet, PackageCheck, Lightbulb, RefreshCw, Trash2, Download, Share2 } from "lucide-react";
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -174,6 +175,71 @@ export function ItineraryView({
                     Heads up: estimated cost is over your budget by {formatPKR(used - budget)}.
                   </p>
                 )}
+              </div>
+            );
+          })()}
+        </div>
+        <div className="border-b px-6 py-5">
+          {(() => {
+            const transport = itinerary.days.reduce((s, d) => s + (d.transport?.costPKR || 0), 0);
+            const food = itinerary.days.reduce((s, d) => s + (d.food?.costPKR || 0), 0);
+            const stay = itinerary.days.reduce((s, d) => s + (d.stay?.costPKR || 0), 0);
+            const total = transport + food + stay;
+            const pct = (n: number) => (total > 0 ? Math.round((n / total) * 100) : 0);
+            const data = [
+              { key: "Transport", value: transport, color: "var(--primary)", icon: <Bus className="h-4 w-4" /> },
+              { key: "Food", value: food, color: "var(--accent)", icon: <Utensils className="h-4 w-4" /> },
+              { key: "Stay", value: stay, color: "#C9A961", icon: <BedDouble className="h-4 w-4" /> },
+            ];
+            return (
+              <div>
+                <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-foreground">
+                  <Wallet className="h-4 w-4 text-primary" /> Cost Breakdown
+                </div>
+                <div className="grid items-center gap-4 sm:grid-cols-2">
+                  <div className="h-52 w-full">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <PieChart>
+                        <Pie
+                          data={data}
+                          dataKey="value"
+                          nameKey="key"
+                          innerRadius="55%"
+                          outerRadius="85%"
+                          paddingAngle={2}
+                          stroke="none"
+                        >
+                          {data.map((d) => (
+                            <Cell key={d.key} fill={d.color} />
+                          ))}
+                        </Pie>
+                        <Tooltip
+                          formatter={(v: number, n: string) => [formatPKR(v) + ` (${pct(v)}%)`, n]}
+                          contentStyle={{ borderRadius: 8, border: "1px solid var(--border)", background: "var(--card)" }}
+                        />
+                      </PieChart>
+                    </ResponsiveContainer>
+                  </div>
+                  <ul className="space-y-2">
+                    {data.map((d) => (
+                      <li key={d.key} className="flex items-center justify-between gap-3 rounded-lg border bg-card p-3">
+                        <div className="flex items-center gap-2">
+                          <span
+                            className="inline-flex h-6 w-6 items-center justify-center rounded-md text-white"
+                            style={{ backgroundColor: d.color }}
+                          >
+                            {d.icon}
+                          </span>
+                          <span className="text-sm font-medium">{d.key}</span>
+                        </div>
+                        <div className="text-sm text-muted-foreground">
+                          <span className="font-semibold text-foreground">{formatPKR(d.value)}</span>{" "}
+                          <span className="text-xs">({pct(d.value)}%)</span>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             );
           })()}
