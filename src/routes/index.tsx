@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
-import { Loader2, Sparkles, MapPin, Wallet, Users, Compass, Mountain, Utensils, Waves, ScrollText, Church, Bike, Clock, ListChecks, Route as RouteIcon, HeartHandshake } from "lucide-react";
+import { Loader2, Sparkles, MapPin, Wallet, Users, Compass, Mountain, Utensils, Waves, ScrollText, Church, Bike, Clock, ListChecks, Route as RouteIcon, HeartHandshake, ClipboardList, MapPinned } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -137,6 +137,26 @@ function Landing() {
           <StatPill icon={Clock} label="Under 60 seconds" />
           <StatPill icon={RouteIcon} label="15+ PK destinations" />
           <StatPill icon={HeartHandshake} label="Student-friendly costs" />
+        </div>
+      </section>
+
+      {/* How it works */}
+      <section className="mx-auto max-w-5xl animate-fade-in px-4 pb-4 [animation-delay:280ms] [animation-fill-mode:both]">
+        <h2 className="mb-5 text-center text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+          How it works
+        </h2>
+        <div className="relative">
+          {/* Connector line (desktop) */}
+          <div
+            aria-hidden
+            className="absolute left-[16.6%] right-[16.6%] top-5 hidden h-[2px] sm:block"
+            style={{ backgroundImage: "var(--gradient-hero)", opacity: 0.35 }}
+          />
+          <ol className="relative grid gap-6 sm:grid-cols-3 sm:gap-4">
+            <HowStep n={1} icon={ClipboardList} title="Enter your trip details" />
+            <HowStep n={2} icon={Sparkles} title="AI creates your plan" />
+            <HowStep n={3} icon={MapPinned} title="Get your budget itinerary" />
+          </ol>
         </div>
       </section>
 
