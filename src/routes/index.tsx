@@ -73,8 +73,13 @@ function Landing() {
         itinerary,
       };
       saveTrip(trip);
-      toast.success("Your itinerary is ready!");
-      navigate({ to: "/trips/$id", params: { id: trip.id } });
+      toast.success("Itinerary created successfully!", {
+        description: "Your trip has been planned — opening it now.",
+        duration: 2500,
+      });
+      setTimeout(() => {
+        navigate({ to: "/trips/$id", params: { id: trip.id } });
+      }, 600);
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Failed to generate itinerary");
     } finally {
