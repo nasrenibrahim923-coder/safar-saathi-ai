@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Slider } from "@/components/ui/slider";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
 import {
   DESTINATIONS,
   GROUP_SIZES,
@@ -380,6 +381,7 @@ function Landing() {
           <FeatureCard title="Save & refine" body="Save trips to My Trips and regenerate any day with one click." />
         </div>
       </section>
+      <SiteFooter />
     </div>
   );
 }

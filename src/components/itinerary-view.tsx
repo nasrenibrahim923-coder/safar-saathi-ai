@@ -142,6 +142,47 @@ export function ItineraryView({
         </div>
         <div className="border-b px-6 py-5">
           {(() => {
+            const transport = itinerary.days.reduce((s, d) => s + (d.transport?.costPKR || 0), 0);
+            const food = itinerary.days.reduce((s, d) => s + (d.food?.costPKR || 0), 0);
+            const stay = itinerary.days.reduce((s, d) => s + (d.stay?.costPKR || 0), 0);
+            const stats = [
+              { label: "Transport", value: transport, icon: <Bus className="h-4 w-4" />, color: "var(--primary)" },
+              { label: "Food", value: food, icon: <Utensils className="h-4 w-4" />, color: "var(--accent)" },
+              { label: "Stay", value: stay, icon: <BedDouble className="h-4 w-4" />, color: "#C9A961" },
+            ];
+            return (
+              <div>
+                <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-foreground">
+                  <Sparkles className="h-4 w-4 text-primary" /> Total Trip Summary
+                </div>
+                <div className="grid gap-3 sm:grid-cols-3">
+                  {stats.map((s) => (
+                    <div
+                      key={s.label}
+                      className="rounded-xl border bg-card p-4 transition-all hover:-translate-y-0.5"
+                      style={{ boxShadow: "var(--shadow-card)" }}
+                    >
+                      <div className="flex items-center gap-2">
+                        <span
+                          className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-white"
+                          style={{ backgroundColor: s.color }}
+                        >
+                          {s.icon}
+                        </span>
+                        <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                          Total {s.label}
+                        </span>
+                      </div>
+                      <div className="mt-2 text-xl font-bold text-foreground">{formatPKR(s.value)}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          })()}
+        </div>
+        <div className="border-b px-6 py-5">
+          {(() => {
             const used = itinerary.totalEstimatedCostPKR;
             const budget = trip.input.budgetPKR;
             const pct = budget > 0 ? (used / budget) * 100 : 0;
