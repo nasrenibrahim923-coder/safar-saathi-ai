@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Trash2, MapPin, Calendar, Wallet, Sparkles } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
+import { SiteFooter } from "@/components/site-footer";
 import { deleteTrip, loadTrips } from "@/lib/trips-store";
 import type { SavedTrip } from "@/lib/trip-types";
 
@@ -24,6 +25,7 @@ function TripsShell() {
       <main className="mx-auto max-w-6xl px-4 py-8">
         {isChild ? <Outlet /> : <TripsList />}
       </main>
+      <SiteFooter />
     </div>
   );
 }
