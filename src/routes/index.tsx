@@ -336,3 +336,28 @@ function FeatureCard({ title, body }: { title: string; body: string }) {
     </div>
   );
 }
+
+function HowStep({
+  n,
+  icon: Icon,
+  title,
+}: {
+  n: number;
+  icon: React.ComponentType<{ className?: string }>;
+  title: string;
+}) {
+  return (
+    <li className="flex flex-col items-center text-center">
+      <div
+        className="flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold text-primary-foreground shadow-md ring-4 ring-background"
+        style={{ backgroundImage: "var(--gradient-hero)" }}
+      >
+        {n}
+      </div>
+      <div className="mt-3 flex items-center gap-2 text-sm font-semibold text-foreground">
+        <Icon className="h-4 w-4 text-primary" />
+        <span>{title}</span>
+      </div>
+    </li>
+  );
+}
