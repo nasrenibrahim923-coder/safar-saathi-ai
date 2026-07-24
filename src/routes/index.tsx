@@ -381,6 +381,7 @@ function Landing() {
           <FeatureCard title="Save & refine" body="Save trips to My Trips and regenerate any day with one click." />
         </div>
       </section>
+      <SiteFooter />
     </div>
   );
 }
