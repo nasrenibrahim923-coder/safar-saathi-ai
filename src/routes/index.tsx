@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
-import { Loader2, Sparkles, MapPin, Wallet, Users, Compass, Mountain, Utensils, Waves, ScrollText, Church, Bike, Clock, ListChecks, Route as RouteIcon, HeartHandshake, ClipboardList, MapPinned } from "lucide-react";
+import { Loader2, Sparkles, MapPin, Wallet, Users, Compass, Mountain, Utensils, Waves, ScrollText, Church, Bike, Clock, ListChecks, Route as RouteIcon, HeartHandshake, ClipboardList, MapPinned, Quote, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -197,6 +197,30 @@ function Landing() {
         <p className="mt-3 text-center text-xs text-muted-foreground">
           This is just a preview — fill the form below to generate your own real plan.
         </p>
+      </section>
+
+      {/* Testimonials */}
+      <section className="mx-auto max-w-5xl animate-fade-in px-4 pb-4 pt-6 [animation-delay:320ms] [animation-fill-mode:both]">
+        <h2 className="mb-5 text-center text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+          Why students love Safar Saathi
+        </h2>
+        <div className="grid gap-4 sm:grid-cols-3">
+          <Testimonial
+            quote="Planned my Hunza trip in 2 minutes and stayed exactly within budget!"
+            name="Ayesha K."
+            school="LUMS"
+          />
+          <Testimonial
+            quote="The dhaba and hostel picks were spot on. Saved me thousands on my Skardu trip."
+            name="Bilal R."
+            school="NUST"
+          />
+          <Testimonial
+            quote="Finally a planner that gets student budgets — Daewoo routes and all!"
+            name="Hira M."
+            school="FAST Lahore"
+          />
+        </div>
       </section>
 
       {/* Form */}
@@ -398,6 +422,27 @@ function HowStep({
         <span>{title}</span>
       </div>
     </li>
+  );
+}
+
+function Testimonial({ quote, name, school }: { quote: string; name: string; school: string }) {
+  return (
+    <div
+      className="relative rounded-xl border bg-card p-5"
+      style={{ boxShadow: "var(--shadow-card)" }}
+    >
+      <Quote className="absolute right-4 top-4 h-6 w-6 text-primary/15" />
+      <div className="flex gap-0.5 text-accent">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <Star key={i} className="h-3.5 w-3.5 fill-current" />
+        ))}
+      </div>
+      <p className="mt-3 text-sm leading-relaxed text-foreground">“{quote}”</p>
+      <div className="mt-4 border-t border-border/60 pt-3 text-xs">
+        <div className="font-semibold text-foreground">{name}</div>
+        <div className="text-muted-foreground">Student, {school}</div>
+      </div>
+    </div>
   );
 }
 
