@@ -160,6 +160,45 @@ function Landing() {
         </div>
       </section>
 
+      {/* Sample plan preview */}
+      <section className="mx-auto max-w-3xl animate-fade-in px-4 pb-4 pt-6 [animation-delay:300ms] [animation-fill-mode:both]">
+        <div className="mb-2 flex items-center justify-center">
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-card/70 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+            <Sparkles className="h-3 w-3 text-accent" /> Example output
+          </span>
+        </div>
+        <div
+          aria-hidden
+          className="pointer-events-none relative select-none opacity-80"
+        >
+          <Card className="overflow-hidden border-0" style={{ boxShadow: "var(--shadow-card)" }}>
+            <div style={{ backgroundImage: "var(--gradient-hero)" }} className="h-1.5 w-full" />
+            <CardContent className="p-5 sm:p-6">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div>
+                  <div className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Sample trip</div>
+                  <div className="mt-0.5 text-base font-bold text-foreground sm:text-lg">
+                    Lahore → Murree · 3 days
+                  </div>
+                </div>
+                <div className="rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
+                  Budget: PKR 15,000
+                </div>
+              </div>
+
+              <ul className="mt-4 space-y-2.5">
+                <SampleItem day="Day 1" title="Mall Road stroll & Patriata Chairlift" price="PKR 3,200" />
+                <SampleItem day="Day 2" title="Pindi Point sunset + dhaba dinner" price="PKR 2,800" />
+                <SampleItem day="Day 3" title="Nathia Gali hike & return to Lahore" price="PKR 4,100" />
+              </ul>
+            </CardContent>
+          </Card>
+        </div>
+        <p className="mt-3 text-center text-xs text-muted-foreground">
+          This is just a preview — fill the form below to generate your own real plan.
+        </p>
+      </section>
+
       {/* Form */}
       <section className="mx-auto max-w-3xl animate-fade-in px-4 pb-16 [animation-delay:320ms] [animation-fill-mode:both]">
         <Card className="overflow-hidden border-0" style={{ boxShadow: "var(--shadow-elegant)" }}>
