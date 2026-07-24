@@ -400,3 +400,20 @@ function HowStep({
     </li>
   );
 }
+
+function SampleItem({ day, title, price }: { day: string; title: string; price: string }) {
+  return (
+    <li className="flex items-center justify-between gap-3 rounded-lg border border-border/60 bg-background/60 px-3 py-2.5">
+      <div className="flex min-w-0 items-center gap-3">
+        <span
+          className="shrink-0 rounded-md px-2 py-0.5 text-[11px] font-bold text-primary-foreground"
+          style={{ backgroundImage: "var(--gradient-hero)" }}
+        >
+          {day}
+        </span>
+        <span className="truncate text-sm font-medium text-foreground">{title}</span>
+      </div>
+      <span className="shrink-0 text-sm font-semibold text-accent">{price}</span>
+    </li>
+  );
+}
