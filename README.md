@@ -167,4 +167,4 @@ If continued beyond its current stage as a project, planned improvements include
 
 ## 👩‍💻 Author
 
-Built by **Nasreen Ibrahim** as a final project for the ACT AI course (HEC × AI SkillBridge × PMYP).
+Built by **Nasreen BiBi** as a final project for the ACT AI course (HEC × AI SkillBridge × PMYP).
