@@ -3,8 +3,8 @@ import { Compass } from "lucide-react";
 
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-border/60 bg-background/80 backdrop-blur">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
+    <header className="sticky top-0 z-40 w-full border-b border-border/50 bg-background/60 backdrop-blur-xl backdrop-saturate-150 shadow-[0_1px_0_0_rgba(255,255,255,0.5)_inset,0_4px_20px_-8px_oklch(0.4_0.05_210/0.15)]">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
         <Link to="/" className="flex items-center gap-2 group">
           <span
             className="flex h-9 w-9 items-center justify-center rounded-xl text-primary-foreground shadow-sm transition-transform group-hover:scale-105"

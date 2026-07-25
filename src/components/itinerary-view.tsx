@@ -68,8 +68,8 @@ export function ItineraryView({
   }
 
   return (
-    <div className="space-y-6">
-      <Card className="overflow-hidden border-0" style={{ boxShadow: "var(--shadow-elegant)" }}>
+    <div className="space-y-8">
+      <Card className="overflow-hidden border-0 rounded-2xl animate-slide-up" style={{ boxShadow: "var(--shadow-elegant)" }}>
         <div style={{ backgroundImage: "var(--gradient-hero)" }} className="p-6 text-primary-foreground">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>
@@ -305,9 +305,13 @@ export function ItineraryView({
         </CardContent>
       </Card>
 
-      <div className="grid gap-4">
-        {itinerary.days.map((d) => (
-          <Card key={d.day} className="overflow-hidden" style={{ boxShadow: "var(--shadow-card)" }}>
+      <div className="grid gap-5">
+        {itinerary.days.map((d, idx) => (
+          <Card
+            key={d.day}
+            className="overflow-hidden rounded-2xl border-border/60 animate-slide-up transition-shadow hover:shadow-lg"
+            style={{ boxShadow: "var(--shadow-premium)", animationDelay: `${idx * 80}ms` }}
+          >
             <CardHeader className="flex flex-row items-start justify-between gap-3 space-y-0 border-b bg-secondary/40">
               <div className="flex items-start gap-3">
                 <div
@@ -376,8 +380,8 @@ export function ItineraryView({
         ))}
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2">
-        <Card style={{ boxShadow: "var(--shadow-card)" }}>
+      <div className="grid gap-5 md:grid-cols-2">
+        <Card className="rounded-2xl animate-slide-up" style={{ boxShadow: "var(--shadow-premium)" }}>
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-base">
               <Lightbulb className="h-4 w-4 text-accent" /> Budget tips
@@ -394,7 +398,7 @@ export function ItineraryView({
             </ul>
           </CardContent>
         </Card>
-        <Card style={{ boxShadow: "var(--shadow-card)" }}>
+        <Card className="rounded-2xl animate-slide-up" style={{ boxShadow: "var(--shadow-premium)", animationDelay: "80ms" }}>
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-base">
               <PackageCheck className="h-4 w-4 text-primary" /> Packing checklist
